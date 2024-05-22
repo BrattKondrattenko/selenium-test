@@ -18,5 +18,12 @@
     "allure-mocha": "^2.15.1",
     "chai": "^5.1.1",
     "mocha": "^10.4.0"
+  },
+  "mocha": {
+    "parallel": false,
+    "reporter": "allure-mocha",
+    "reporterOptions": {
+      "resultsDir": "allure-results"
+    }
   }
 }
