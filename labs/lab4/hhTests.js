@@ -4,6 +4,7 @@ const { afterEach } = require('mocha');
 const HhPage = require('./hhPage');
 const fs = require('fs');
 const path = require('path');
+const assert = require('assert');
 
 describe('Тесты сайта HH.ru', function() {
     this.timeout(60000);
@@ -50,15 +51,9 @@ describe('Тесты сайта HH.ru', function() {
 
     it('Должен перейти на страницу поиска вакансий', async () => {
         await allure.step("Шаг 1. Перешел на страницу поиска вакансий", async () => {
-            await hhPage.clickJobSearchButton();
-            logStep("Перешел на страницу поиска вакансий");
-            allure.attachment("Log", Buffer.from(logs.join("\n")), "text/plain");
-        });
-
-        await allure.step("Шаг 2. Ввел номер группы и отобразил результаты поиска", async () => {
             await hhPage.inputSearchQuery('QA Engineer');
             await hhPage.clickSearchButton();
-            logStep("Ввел номер группы и отобразил результаты поиска");
+            logStep("Перешел на страницу поиска вакансий");
             allure.attachment("Log", Buffer.from(logs.join("\n")), "text/plain");
         });
 
@@ -66,14 +61,14 @@ describe('Тесты сайта HH.ru', function() {
     });
 
     it('Должен показать результаты поиска', async () => {
-        await allure.step("Шаг 3. Результаты поиска видимы", async () => {
+        await allure.step("Шаг 2. Результаты поиска видимы", async () => {
             const isVisible = await hhPage.isJobListingVisible();
             assert.ok(isVisible, "Результаты поиска не отображаются");
             logStep("Результаты поиска видимы");
             allure.attachment("Log", Buffer.from(logs.join("\n")), "text/plain");
         });
 
-        await allure.step("Шаг 4. Получил информацию о первой вакансии", async () => {
+        await allure.step("Шаг 3. Получил информацию о первой вакансии", async () => {
             const jobInfo = await hhPage.getFirstJobListingInfo();
             logStep(`Информация о первой вакансии: ${JSON.stringify(jobInfo)}`);
             allure.attachment("Log", Buffer.from(logs.join("\n")), "text/plain");
@@ -83,7 +78,7 @@ describe('Тесты сайта HH.ru', function() {
     });
 
     it('Должен открыть страницу первой вакансии', async () => {
-        await allure.step("Шаг 5. Открыл страницу первой вакансии", async () => {
+        await allure.step("Шаг 4. Открыл страницу первой вакансии", async () => {
             await hhPage.clickFirstJobListing();
             logStep("Открыл страницу первой вакансии");
             allure.attachment("Log", Buffer.from(logs.join("\n")), "text/plain");
