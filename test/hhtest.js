@@ -61,18 +61,18 @@ describe('Тесты сайта HH.ru', function() {
     });
 
     it('Должен показать результаты поиска', async () => {
-        await allure.step("Шаг 2. Результаты поиска видимы", async () => {
+        await allure.step("Шаг 2. Закрыл окно регистрации", async () => {
+            await hhPage.closeRegistrationPopup();
+            logStep("Закрыл окно регистрации");
+            allure.attachment("Log", Buffer.from(logs.join("\n")), "text/plain");
+        });
+
+        await allure.step("Шаг 3. Результаты поиска видимы", async () => {
             const isVisible = await hhPage.isJobListingVisible();
             assert.ok(isVisible, "Результаты поиска не отображаются");
             logStep("Результаты поиска видимы");
             allure.attachment("Log", Buffer.from(logs.join("\n")), "text/plain");
         });
-
-        // await allure.step("Шаг 3. Получил информацию о первой вакансии", async () => {
-        //     const jobInfo = await hhPage.getFirstJobListingInfo();
-        //     logStep(`Информация о первой вакансии: ${JSON.stringify(jobInfo)}`);
-        //     allure.attachment("Log", Buffer.from(logs.join("\n")), "text/plain");
-        // });
 
         await driver.sleep(1000);
     });

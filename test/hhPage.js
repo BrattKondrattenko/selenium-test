@@ -4,12 +4,10 @@ class HhPage {
     constructor(driver) {
         this.driver = driver;
         this.url = 'https://hh.ru/';
-        this.searchInput = By.xpath("//input[contains(@data-qa, 'search-input')]");
-        this.searchButton = By.xpath("//button[contains(@data-qa, 'search-button')]");
+        this.searchInput = By.xpath("//input[@data-qa='search-input']");
+        this.searchButton = By.xpath("//button[@data-qa='search-button']");
         this.jobListing = By.xpath("//div[contains(@data-qa, 'vacancy-serp__vacancy')]");
-        this.firstJobTitle = ".//a[contains(@data-qa, 'serp-item__title')]";
-        this.firstJobCompany = ".//a[contains(@data-qa, 'vacancy-serp__vacancy-employer')]";
-        this.firstJobLocation = ".//span[contains(@data-qa, 'vacancy-serp__vacancy-address')]";
+        this.closeRegistrationPopupButton = By.xpath("//div[@data-qa='bloko-modal-close']");
     }
 
     // Открытие страницы и максимизация окна браузера
@@ -17,6 +15,17 @@ class HhPage {
         await this.driver.get(this.url);
         await this.driver.manage().window().maximize();
         await this.driver.sleep(5000); // Пауза для полной загрузки страницы
+    }
+
+    // Закрытие окна регистрации, если оно появляется
+    async closeRegistrationPopup() {
+        try {
+            await this.driver.wait(until.elementLocated(this.closeRegistrationPopupButton), 15000);
+            const closeButton = await this.driver.findElement(this.closeRegistrationPopupButton);
+            await closeButton.click();
+        } catch (error) {
+            console.log("Окно регистрации не появилось.");
+        }
     }
 
     // Ввод текста в поле поиска
@@ -39,24 +48,24 @@ class HhPage {
         let jobListings = await this.driver.findElements(this.jobListing);
         return jobListings.length > 0;
     }
-
-    // Получение информации о первой вакансии в списке
-    async getFirstJobListingInfo() {
-        await this.driver.wait(until.elementLocated(this.jobListing), 10000);
-        let firstJob = await this.driver.findElement(this.jobListing);
-
-        let jobTitle = await firstJob.findElement(By.xpath(this.firstJobTitle)).getText();
-        let companyName = await firstJob.findElement(By.xpath(this.firstJobCompany)).getText();
-        let jobLocation = await firstJob.findElement(By.xpath(this.firstJobLocation)).getText();
-
-        return { jobTitle, companyName, jobLocation };
-    }
+    //
+    // // Получение информации о первой вакансии в списке
+    // async getFirstJobListingInfo() {
+    //     await this.driver.wait(until.elementLocated(this.jobListing), 10000);
+    //     let firstJob = await this.driver.findElement(this.jobListing);
+    //
+    //     let jobTitle = await firstJob.findElement(By.xpath(".//a[@data-qa='serp-item__title']")).getText();
+    //     let companyName = await firstJob.findElement(By.xpath(".//a[@data-qa='vacancy-serp__vacancy-employer']")).getText();
+    //     let jobLocation = await firstJob.findElement(By.xpath(".//span[@data-qa='vacancy-serp__vacancy-address']")).getText();
+    //
+    //     return { jobTitle, companyName, jobLocation };
+    // }
 
     // Клик на первую вакансию в списке
     async clickFirstJobListing() {
         await this.driver.wait(until.elementLocated(this.jobListing), 10000);
         let firstJob = await this.driver.findElement(this.jobListing);
-        await firstJob.findElement(By.xpath(this.firstJobTitle)).click();
+        await firstJob.findElement(By.xpath(".//span[@data-qa='serp-item__title']")).click();
     }
 }
 

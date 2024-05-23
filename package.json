@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive --timeout 60000",
+    "test": "mocha --timeout 60000 --recursive test",
     "results": "allure serve allure-results"
   },
   "author": "",
