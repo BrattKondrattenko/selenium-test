@@ -48,18 +48,6 @@ class HhPage {
         let jobListings = await this.driver.findElements(this.jobListing);
         return jobListings.length > 0;
     }
-    //
-    // // Получение информации о первой вакансии в списке
-    // async getFirstJobListingInfo() {
-    //     await this.driver.wait(until.elementLocated(this.jobListing), 10000);
-    //     let firstJob = await this.driver.findElement(this.jobListing);
-    //
-    //     let jobTitle = await firstJob.findElement(By.xpath(".//a[@data-qa='serp-item__title']")).getText();
-    //     let companyName = await firstJob.findElement(By.xpath(".//a[@data-qa='vacancy-serp__vacancy-employer']")).getText();
-    //     let jobLocation = await firstJob.findElement(By.xpath(".//span[@data-qa='vacancy-serp__vacancy-address']")).getText();
-    //
-    //     return { jobTitle, companyName, jobLocation };
-    // }
 
     // Клик на первую вакансию в списке
     async clickFirstJobListing() {
